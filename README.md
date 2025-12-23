@@ -4,7 +4,6 @@ Hệ thống AI chơi cờ tích hợp đầy đủ với Minimax, Neural Networ
 
 ## 📋 Cấu trúc dự án
 
-```
 project1/
 ├── board_state.py          # BƯỚC 1: Biểu diễn trạng thái (12 planes)
 ├── value_network.py        # BƯỚC 3: Neural Network (FC layers)
@@ -215,8 +214,3 @@ print(f"Move: {move}, Score: {score:.4f}")
 ✅ Integrate NN with game algorithm
 ✅ Create interactive GUI
 ✅ Full end-to-end AI system
-
----
-
-**Build by:** AI Chess Project
-**Date:** 2025
