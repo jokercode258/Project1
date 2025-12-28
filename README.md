@@ -5,6 +5,7 @@ Hệ thống AI chơi cờ tích hợp đầy đủ với Minimax, Neural Networ
 
 # Cấu trúc dự án
 
+```
 project1/
 |
 ├── assets/               (PNG hình quân cờ)
@@ -26,6 +27,7 @@ project1/
 │   └── train.py          (Training loop)
 ├── main.py               (Entry point)
 └── requirements.txt
+```
 
 ## 6 Bước chính
 
