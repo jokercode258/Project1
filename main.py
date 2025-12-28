@@ -1,17 +1,12 @@
-"""
-MAIN ENTRY POINT
-"""
-
 import argparse
 import torch
 from pathlib import Path
 
-# Import modules
-from train import full_training_pipeline, ChessTrainer
-from value_network import ValueNetwork
-from minimax_engine import MinimaxEngine
-from self_play import SelfPlayManager
-from gui import create_gui_with_engine, ChessGUI
+from training.train import full_training_pipeline, ChessTrainer
+from chess_ai.value_network import ValueNetwork
+from chess_ai.minimax_engine import MinimaxEngine
+from chess_ai.self_play import SelfPlayManager
+from gui_module.gui import create_gui_with_engine, ChessGUI
 import chess
 
 
@@ -22,7 +17,7 @@ def train_command(args):
     print("=" * 60 + "\n")
     
     network, trainer = full_training_pipeline(output_dir=args.output_dir)
-    print("\n✅ Training hoàn thành!")
+    print("\nTraining hoàn thành!")
 
 
 def play_command(args):
@@ -85,7 +80,7 @@ def selfplay_command(args):
         max_moves=args.max_moves
     )
     
-    print(f"\n📊 Stats:")
+    print(f"\nStats:")
     print(f"  Trắng thắng: {stats['white_wins']}")
     print(f"  Đen thắng: {stats['black_wins']}")
     print(f"  Hòa: {stats['draws']}")
@@ -132,13 +127,13 @@ def analyze_command(args):
     moves_scores = []
     for move in list(board.legal_moves)[:10]:
         board.push(move)
-        _, score = engine.minimax(board, args.depth - 1, 
+        score, _ = engine.minimax(board, args.depth - 1, 
                                  maximizing=not board.turn)
         board.pop()
-        moves_scores.append((move, score))
+        moves_scores.append((score, move))
     
-    moves_scores.sort(key=lambda x: x[1], reverse=True)
-    for i, (move, score) in enumerate(moves_scores[:3], 1):
+    moves_scores.sort(key=lambda x: x[0], reverse=True)
+    for i, (score, move) in enumerate(moves_scores[:3], 1):
         print(f"  {i}. {move} (score={score:.4f})")
 
 
@@ -151,13 +146,13 @@ def main():
     
     # Train command
     train_parser = subparsers.add_parser('train', help='Train the model')
-    train_parser.add_argument('--output-dir', default='./models',
+    train_parser.add_argument('--output-dir', default='./data',
                             help='Output directory for models')
     train_parser.set_defaults(func=train_command)
     
     # Play command
     play_parser = subparsers.add_parser('play', help='Play vs AI')
-    play_parser.add_argument('--model', default='./models/chess_value_network.pth',
+    play_parser.add_argument('--model', default='./data/chess_value_network.pth',
                            help='Path to model weights')
     play_parser.add_argument('--depth', type=int, default=3,
                            help='Minimax depth')
@@ -188,7 +183,7 @@ def main():
     
     # Analyze command
     analyze_parser = subparsers.add_parser('analyze', help='Analyze position')
-    analyze_parser.add_argument('--model', default='./models/chess_value_network.pth',
+    analyze_parser.add_argument('--model', default='./data/chess_value_network.pth',
                               help='Path to model weights')
     analyze_parser.add_argument('--depth', type=int, default=3,
                               help='Minimax depth')
